@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<!-- saved from url=(0080)https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.odeint.html -->
+<html lang="en" data-content_root="../../" data-mode="auto" data-theme="light" class="fontawesome-i2svg-active fontawesome-i2svg-complete"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>scipy.integrate.odeint — SciPy v1.13.1 Manual</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <style type="text/css">:host,:root{--fa-font-solid:normal 900 1em/1 "Font Awesome 6 Solid";--fa-font-regular:normal 400 1em/1 "Font Awesome 6 Regular";--fa-font-light:normal 300 1em/1 "Font Awesome 6 Light";--fa-font-thin:normal 100 1em/1 "Font Awesome 6 Thin";--fa-font-duotone:normal 900 1em/1 "Font Awesome 6 Duotone";--fa-font-sharp-solid:normal 900 1em/1 "Font Awesome 6 Sharp";--fa-font-sharp-regular:normal 400 1em/1 "Font Awesome 6 Sharp";--fa-font-sharp-light:normal 300 1em/1 "Font Awesome 6 Sharp";--fa-font-sharp-thin:normal 100 1em/1 "Font Awesome 6 Sharp";--fa-font-brands:normal 400 1em/1 "Font Awesome 6 Brands"}svg:not(:host).svg-inline--fa,svg:not(:root).svg-inline--fa{overflow:visible;box-sizing:content-box}.svg-inline--fa{display:var(--fa-display,inline-block);height:1em;overflow:visible;vertical-align:-.125em}.svg-inline--fa.fa-2xs{vertical-align:.1em}.svg-inline--fa.fa-xs{vertical-align:0}.svg-inline--fa.fa-sm{vertical-align:-.0714285705em}.svg-inline--fa.fa-lg{vertical-align:-.2em}.svg-inline--fa.fa-xl{vertical-align:-.25em}.svg-inline--fa.fa-2xl{vertical-align:-.3125em}.svg-inline--fa.fa-pull-left{margin-right:var(--fa-pull-margin,.3em);width:auto}.svg-inline--fa.fa-pull-right{margin-left:var(--fa-pull-margin,.3em);width:auto}.svg-inline--fa.fa-li{width:var(--fa-li-width,2em);top:.25em}.svg-inline--fa.fa-fw{width:var(--fa-fw-width,1.25em)}.fa-layers svg.svg-inline--fa{bottom:0;left:0;margin:auto;position:absolute;right:0;top:0}.fa-layers-counter,.fa-layers-text{display:inline-block;position:absolute;text-align:center}.fa-layers{display:inline-block;height:1em;position:relative;text-align:center;vertical-align:-.125em;width:1em}.fa-layers svg.svg-inline--fa{-webkit-transform-origin:center center;transform-origin:center center}.fa-layers-text{left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);-webkit-transform-origin:center center;transform-origin:center center}.fa-layers-counter{background-color:var(--fa-counter-background-color,#ff253a);border-radius:var(--fa-counter-border-radius,1em);box-sizing:border-box;color:var(--fa-inverse,#fff);line-height:var(--fa-counter-line-height,1);max-width:var(--fa-counter-max-width,5em);min-width:var(--fa-counter-min-width,1.5em);overflow:hidden;padding:var(--fa-counter-padding,.25em .5em);right:var(--fa-right,0);text-overflow:ellipsis;top:var(--fa-top,0);-webkit-transform:scale(var(--fa-counter-scale,.25));transform:scale(var(--fa-counter-scale,.25));-webkit-transform-origin:top right;transform-origin:top right}.fa-layers-bottom-right{bottom:var(--fa-bottom,0);right:var(--fa-right,0);top:auto;-webkit-transform:scale(var(--fa-layers-scale,.25));transform:scale(var(--fa-layers-scale,.25));-webkit-transform-origin:bottom right;transform-origin:bottom right}.fa-layers-bottom-left{bottom:var(--fa-bottom,0);left:var(--fa-left,0);right:auto;top:auto;-webkit-transform:scale(var(--fa-layers-scale,.25));transform:scale(var(--fa-layers-scale,.25));-webkit-transform-origin:bottom left;transform-origin:bottom left}.fa-layers-top-right{top:var(--fa-top,0);right:var(--fa-right,0);-webkit-transform:scale(var(--fa-layers-scale,.25));transform:scale(var(--fa-layers-scale,.25));-webkit-transform-origin:top right;transform-origin:top right}.fa-layers-top-left{left:var(--fa-left,0);right:auto;top:var(--fa-top,0);-webkit-transform:scale(var(--fa-layers-scale,.25));transform:scale(var(--fa-layers-scale,.25));-webkit-transform-origin:top left;transform-origin:top left}.fa-1x{font-size:1em}.fa-2x{font-size:2em}.fa-3x{font-size:3em}.fa-4x{font-size:4em}.fa-5x{font-size:5em}.fa-6x{font-size:6em}.fa-7x{font-size:7em}.fa-8x{font-size:8em}.fa-9x{font-size:9em}.fa-10x{font-size:10em}.fa-2xs{font-size:.625em;line-height:.1em;vertical-align:.225em}.fa-xs{font-size:.75em;line-height:.0833333337em;vertical-align:.125em}.fa-sm{font-size:.875em;line-height:.0714285718em;vertical-align:.0535714295em}.fa-lg{font-size:1.25em;line-height:.05em;vertical-align:-.075em}.fa-xl{font-size:1.5em;line-height:.0416666682em;vertical-align:-.125em}.fa-2xl{font-size:2em;line-height:.03125em;vertical-align:-.1875em}.fa-fw{text-align:center;width:1.25em}.fa-ul{list-style-type:none;margin-left:var(--fa-li-margin,2.5em);padding-left:0}.fa-ul>li{position:relative}.fa-li{left:calc(var(--fa-li-width,2em) * -1);position:absolute;text-align:center;width:var(--fa-li-width,2em);line-height:inherit}.fa-border{border-color:var(--fa-border-color,#eee);border-radius:var(--fa-border-radius,.1em);border-style:var(--fa-border-style,solid);border-width:var(--fa-border-width,.08em);padding:var(--fa-border-padding,.2em .25em .15em)}.fa-pull-left{float:left;margin-right:var(--fa-pull-margin,.3em)}.fa-pull-right{float:right;margin-left:var(--fa-pull-margin,.3em)}.fa-beat{-webkit-animation-name:fa-beat;animation-name:fa-beat;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,ease-in-out);animation-timing-function:var(--fa-animation-timing,ease-in-out)}.fa-bounce{-webkit-animation-name:fa-bounce;animation-name:fa-bounce;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,cubic-bezier(.28,.84,.42,1));animation-timing-function:var(--fa-animation-timing,cubic-bezier(.28,.84,.42,1))}.fa-fade{-webkit-animation-name:fa-fade;animation-name:fa-fade;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,cubic-bezier(.4,0,.6,1));animation-timing-function:var(--fa-animation-timing,cubic-bezier(.4,0,.6,1))}.fa-beat-fade{-webkit-animation-name:fa-beat-fade;animation-name:fa-beat-fade;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,cubic-bezier(.4,0,.6,1));animation-timing-function:var(--fa-animation-timing,cubic-bezier(.4,0,.6,1))}.fa-flip{-webkit-animation-name:fa-flip;animation-name:fa-flip;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,ease-in-out);animation-timing-function:var(--fa-animation-timing,ease-in-out)}.fa-shake{-webkit-animation-name:fa-shake;animation-name:fa-shake;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,linear);animation-timing-function:var(--fa-animation-timing,linear)}.fa-spin{-webkit-animation-name:fa-spin;animation-name:fa-spin;-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,2s);animation-duration:var(--fa-animation-duration,2s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,linear);animation-timing-function:var(--fa-animation-timing,linear)}.fa-spin-reverse{--fa-animation-direction:reverse}.fa-pulse,.fa-spin-pulse{-webkit-animation-name:fa-spin;animation-name:fa-spin;-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal);-webkit-animation-duration:var(--fa-animation-duration,1s);animation-duration:var(--fa-animation-duration,1s);-webkit-animation-iteration-count:var(--fa-animation-iteration-count,infinite);animation-iteration-count:var(--fa-animation-iteration-count,infinite);-webkit-animation-timing-function:var(--fa-animation-timing,steps(8));animation-timing-function:var(--fa-animation-timing,steps(8))}@media (prefers-reduced-motion:reduce){.fa-beat,.fa-beat-fade,.fa-bounce,.fa-fade,.fa-flip,.fa-pulse,.fa-shake,.fa-spin,.fa-spin-pulse{-webkit-animation-delay:-1ms;animation-delay:-1ms;-webkit-animation-duration:1ms;animation-duration:1ms;-webkit-animation-iteration-count:1;animation-iteration-count:1;-webkit-transition-delay:0s;transition-delay:0s;-webkit-transition-duration:0s;transition-duration:0s}}@-webkit-keyframes fa-beat{0%,90%{-webkit-transform:scale(1);transform:scale(1)}45%{-webkit-transform:scale(var(--fa-beat-scale,1.25));transform:scale(var(--fa-beat-scale,1.25))}}@keyframes fa-beat{0%,90%{-webkit-transform:scale(1);transform:scale(1)}45%{-webkit-transform:scale(var(--fa-beat-scale,1.25));transform:scale(var(--fa-beat-scale,1.25))}}@-webkit-keyframes fa-bounce{0%{-webkit-transform:scale(1,1) translateY(0);transform:scale(1,1) translateY(0)}10%{-webkit-transform:scale(var(--fa-bounce-start-scale-x,1.1),var(--fa-bounce-start-scale-y,.9)) translateY(0);transform:scale(var(--fa-bounce-start-scale-x,1.1),var(--fa-bounce-start-scale-y,.9)) translateY(0)}30%{-webkit-transform:scale(var(--fa-bounce-jump-scale-x,.9),var(--fa-bounce-jump-scale-y,1.1)) translateY(var(--fa-bounce-height,-.5em));transform:scale(var(--fa-bounce-jump-scale-x,.9),var(--fa-bounce-jump-scale-y,1.1)) translateY(var(--fa-bounce-height,-.5em))}50%{-webkit-transform:scale(var(--fa-bounce-land-scale-x,1.05),var(--fa-bounce-land-scale-y,.95)) translateY(0);transform:scale(var(--fa-bounce-land-scale-x,1.05),var(--fa-bounce-land-scale-y,.95)) translateY(0)}57%{-webkit-transform:scale(1,1) translateY(var(--fa-bounce-rebound,-.125em));transform:scale(1,1) translateY(var(--fa-bounce-rebound,-.125em))}64%{-webkit-transform:scale(1,1) translateY(0);transform:scale(1,1) translateY(0)}100%{-webkit-transform:scale(1,1) translateY(0);transform:scale(1,1) translateY(0)}}@keyframes fa-bounce{0%{-webkit-transform:scale(1,1) translateY(0);transform:scale(1,1) translateY(0)}10%{-webkit-transform:scale(var(--fa-bounce-start-scale-x,1.1),var(--fa-bounce-start-scale-y,.9)) translateY(0);transform:scale(var(--fa-bounce-start-scale-x,1.1),var(--fa-bounce-start-scale-y,.9)) translateY(0)}30%{-webkit-transform:scale(var(--fa-bounce-jump-scale-x,.9),var(--fa-bounce-jump-scale-y,1.1)) translateY(var(--fa-bounce-height,-.5em));transform:scale(var(--fa-bounce-jump-scale-x,.9),var(--fa-bounce-jump-scale-y,1.1)) translateY(var(--fa-bounce-height,-.5em))}50%{-webkit-transform:scale(var(--fa-bounce-land-scale-x,1.05),var(--fa-bounce-land-scale-y,.95)) translateY(0);transform:scale(var(--fa-bounce-land-scale-x,1.05),var(--fa-bounce-land-scale-y,.95)) translateY(0)}57%{-webkit-transform:scale(1,1) translateY(var(--fa-bounce-rebound,-.125em));transform:scale(1,1) translateY(var(--fa-bounce-rebound,-.125em))}64%{-webkit-transform:scale(1,1) translateY(0);transform:scale(1,1) translateY(0)}100%{-webkit-transform:scale(1,1) translateY(0);transform:scale(1,1) translateY(0)}}@-webkit-keyframes fa-fade{50%{opacity:var(--fa-fade-opacity,.4)}}@keyframes fa-fade{50%{opacity:var(--fa-fade-opacity,.4)}}@-webkit-keyframes fa-beat-fade{0%,100%{opacity:var(--fa-beat-fade-opacity,.4);-webkit-transform:scale(1);transform:scale(1)}50%{opacity:1;-webkit-transform:scale(var(--fa-beat-fade-scale,1.125));transform:scale(var(--fa-beat-fade-scale,1.125))}}@keyframes fa-beat-fade{0%,100%{opacity:var(--fa-beat-fade-opacity,.4);-webkit-transform:scale(1);transform:scale(1)}50%{opacity:1;-webkit-transform:scale(var(--fa-beat-fade-scale,1.125));transform:scale(var(--fa-beat-fade-scale,1.125))}}@-webkit-keyframes fa-flip{50%{-webkit-transform:rotate3d(var(--fa-flip-x,0),var(--fa-flip-y,1),var(--fa-flip-z,0),var(--fa-flip-angle,-180deg));transform:rotate3d(var(--fa-flip-x,0),var(--fa-flip-y,1),var(--fa-flip-z,0),var(--fa-flip-angle,-180deg))}}@keyframes fa-flip{50%{-webkit-transform:rotate3d(var(--fa-flip-x,0),var(--fa-flip-y,1),var(--fa-flip-z,0),var(--fa-flip-angle,-180deg));transform:rotate3d(var(--fa-flip-x,0),var(--fa-flip-y,1),var(--fa-flip-z,0),var(--fa-flip-angle,-180deg))}}@-webkit-keyframes fa-shake{0%{-webkit-transform:rotate(-15deg);transform:rotate(-15deg)}4%{-webkit-transform:rotate(15deg);transform:rotate(15deg)}24%,8%{-webkit-transform:rotate(-18deg);transform:rotate(-18deg)}12%,28%{-webkit-transform:rotate(18deg);transform:rotate(18deg)}16%{-webkit-transform:rotate(-22deg);transform:rotate(-22deg)}20%{-webkit-transform:rotate(22deg);transform:rotate(22deg)}32%{-webkit-transform:rotate(-12deg);transform:rotate(-12deg)}36%{-webkit-transform:rotate(12deg);transform:rotate(12deg)}100%,40%{-webkit-transform:rotate(0);transform:rotate(0)}}@keyframes fa-shake{0%{-webkit-transform:rotate(-15deg);transform:rotate(-15deg)}4%{-webkit-transform:rotate(15deg);transform:rotate(15deg)}24%,8%{-webkit-transform:rotate(-18deg);transform:rotate(-18deg)}12%,28%{-webkit-transform:rotate(18deg);transform:rotate(18deg)}16%{-webkit-transform:rotate(-22deg);transform:rotate(-22deg)}20%{-webkit-transform:rotate(22deg);transform:rotate(22deg)}32%{-webkit-transform:rotate(-12deg);transform:rotate(-12deg)}36%{-webkit-transform:rotate(12deg);transform:rotate(12deg)}100%,40%{-webkit-transform:rotate(0);transform:rotate(0)}}@-webkit-keyframes fa-spin{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes fa-spin{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}.fa-rotate-90{-webkit-transform:rotate(90deg);transform:rotate(90deg)}.fa-rotate-180{-webkit-transform:rotate(180deg);transform:rotate(180deg)}.fa-rotate-270{-webkit-transform:rotate(270deg);transform:rotate(270deg)}.fa-flip-horizontal{-webkit-transform:scale(-1,1);transform:scale(-1,1)}.fa-flip-vertical{-webkit-transform:scale(1,-1);transform:scale(1,-1)}.fa-flip-both,.fa-flip-horizontal.fa-flip-vertical{-webkit-transform:scale(-1,-1);transform:scale(-1,-1)}.fa-rotate-by{-webkit-transform:rotate(var(--fa-rotate-angle,none));transform:rotate(var(--fa-rotate-angle,none))}.fa-stack{display:inline-block;vertical-align:middle;height:2em;position:relative;width:2.5em}.fa-stack-1x,.fa-stack-2x{bottom:0;left:0;margin:auto;position:absolute;right:0;top:0;z-index:var(--fa-stack-z-index,auto)}.svg-inline--fa.fa-stack-1x{height:1em;width:1.25em}.svg-inline--fa.fa-stack-2x{height:2em;width:2.5em}.fa-inverse{color:var(--fa-inverse,#fff)}.fa-sr-only,.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}.fa-sr-only-focusable:not(:focus),.sr-only-focusable:not(:focus){position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}.svg-inline--fa .fa-primary{fill:var(--fa-primary-color,currentColor);opacity:var(--fa-primary-opacity,1)}.svg-inline--fa .fa-secondary{fill:var(--fa-secondary-color,currentColor);opacity:var(--fa-secondary-opacity,.4)}.svg-inline--fa.fa-swap-opacity .fa-primary{opacity:var(--fa-secondary-opacity,.4)}.svg-inline--fa.fa-swap-opacity .fa-secondary{opacity:var(--fa-primary-opacity,1)}.svg-inline--fa mask .fa-primary,.svg-inline--fa mask .fa-secondary{fill:#000}.fa-duotone.fa-inverse,.fad.fa-inverse{color:var(--fa-inverse,#fff)}</style><link href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/theme.css" rel="stylesheet">
+<link href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/bootstrap.css" rel="stylesheet">
+<link href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/pydata-sphinx-theme.css" rel="stylesheet">
+
+  
+  <link href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/all.min.css" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin="" href="https://docs.scipy.org/doc/scipy/_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin="" href="https://docs.scipy.org/doc/scipy/_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin="" href="https://docs.scipy.org/doc/scipy/_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/pygments.css">
+    <link rel="stylesheet" type="text/css" href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/plot_directive.css">
+    <link rel="stylesheet" type="text/css" href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css">
+    <link rel="stylesheet" type="text/css" href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/css">
+    <link rel="stylesheet" type="text/css" href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/jupyterlite_sphinx.css">
+    <link rel="stylesheet" type="text/css" href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/sphinx-design.min.css">
+    <link rel="stylesheet" type="text/css" href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/scipy.css">
+    <link rel="stylesheet" type="text/css" href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/try_examples.css">
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/bootstrap.js.下载">
+<link rel="preload" as="script" href="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/pydata-sphinx-theme.js.下载">
+  <script src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/all.min.js.下载"></script>
+
+    <script src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/documentation_options.js.下载"></script>
+    <script src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/doctools.js.下载"></script>
+    <script src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/sphinx_highlight.js.下载"></script>
+    <script src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/jupyterlite_sphinx.js.下载"></script>
+    <script src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/design-tabs.js.下载"></script>
+    <script data-domain="docs.scipy.org" defer="defer" src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/script.js.下载"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/generated/scipy.integrate.odeint';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.15.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://scipy.github.io/devdocs/_static/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.13.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = true;
+        </script>
+    <script src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/versioncheck.js.下载"></script><script type="text/javascript" src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/versionwarning.js.下载"></script>
+    <link rel="icon" href="https://docs.scipy.org/doc/scipy/_static/favicon.ico">
+    <link rel="index" title="Index" href="https://docs.scipy.org/doc/scipy/genindex.html">
+    <link rel="search" title="Search" href="https://docs.scipy.org/doc/scipy/search.html">
+    <link rel="next" title="scipy.integrate.ode" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.ode.html">
+    <link rel="prev" title="scipy.integrate.OdeSolution.__call__" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.OdeSolution.__call__.html">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="docsearch:language" content="en">
+    <meta name="docbuild:last-update" content="May 23, 2024">
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.odeint.html#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top" style="display: none;">
+    <svg class="svg-inline--fa fa-arrow-up" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"></path></svg><!-- <i class="fa-solid fa-arrow-up"></i> Font Awesome fontawesome.com -->
+    Back to top
+  </button>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center" action="https://docs.scipy.org/doc/scipy/search.html" method="get">
+  <svg class="svg-inline--fa fa-magnifying-glass" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="magnifying-glass" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"></path></svg><!-- <i class="fa-solid fa-magnifying-glass"></i> Font Awesome fontawesome.com -->
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <svg class="svg-inline--fa fa-bars" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bars" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path></svg><!-- <span class="fa-solid fa-bars"></span> Font Awesome fontawesome.com -->
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="https://docs.scipy.org/doc/scipy/index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/logo.svg" class="logo__image only-light" alt="SciPy v1.13.1 Manual - Home">
+    <script>document.write(`<img src="../../_static/logo.svg" class="logo__image only-dark" alt="SciPy v1.13.1 Manual - Home"/>`);</script><img src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/logo.svg" class="logo__image only-dark" alt="SciPy v1.13.1 Manual - Home">
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script>
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2" type="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="listbox" aria-controls="pst-version-switcher-list-2" aria-label="Version switcher list" data-active-version-name="1.13.1 (stable)" data-active-version="1.13.1">1.13.1 (stable)</button>
+    <div id="pst-version-switcher-list-2" class="version-switcher__menu dropdown-menu list-group-flush py-0" role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    <a class="dropdown-item list-group-item list-group-item-action py-1" href="https://scipy.github.io/devdocs/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="development" data-version="development"><span>development</span></a><a class="dropdown-item list-group-item list-group-item-action py-1 active" href="https://docs.scipy.org/doc/scipy-1.13.1/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.13.1 (stable)" data-version="1.13.1"><span>1.13.1 (stable)</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.13.0/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.13.0" data-version="1.13.0"><span>1.13.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.12.0/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.12.0" data-version="1.12.0"><span>1.12.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.11.4/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.11.4" data-version="1.11.4"><span>1.11.4</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.11.3/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.11.3" data-version="1.11.3"><span>1.11.3</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.11.2/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.11.2" data-version="1.11.2"><span>1.11.2</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.11.1/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.11.1" data-version="1.11.1"><span>1.11.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.11.0/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.11.0" data-version="1.11.0"><span>1.11.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.10.1/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.10.1" data-version="1.10.1"><span>1.10.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.10.0/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.10.0" data-version="1.10.0"><span>1.10.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.9.3/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.9.3" data-version="1.9.3"><span>1.9.3</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.9.2/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.9.2" data-version="1.9.2"><span>1.9.2</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.9.1/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.9.1" data-version="1.9.1"><span>1.9.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.9.0/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.9.0" data-version="1.9.0"><span>1.9.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.8.1/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.8.1" data-version="1.8.1"><span>1.8.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.8.0/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.8.0" data-version="1.8.0"><span>1.8.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.7.1/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.7.1" data-version="1.7.1"><span>1.7.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.7.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.7.0" data-version="1.7.0"><span>1.7.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.6.3/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.6.3" data-version="1.6.3"><span>1.6.3</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.6.2/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.6.2" data-version="1.6.2"><span>1.6.2</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.6.1/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.6.1" data-version="1.6.1"><span>1.6.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.6.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.6.0" data-version="1.6.0"><span>1.6.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.5.4/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.5.4" data-version="1.5.4"><span>1.5.4</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.5.3/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.5.3" data-version="1.5.3"><span>1.5.3</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.5.2/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.5.2" data-version="1.5.2"><span>1.5.2</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.5.1/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.5.1" data-version="1.5.1"><span>1.5.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.5.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.5.0" data-version="1.5.0"><span>1.5.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.4.1/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.4.1" data-version="1.4.1"><span>1.4.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.4.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.4.0" data-version="1.4.0"><span>1.4.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.3.3/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.3.3" data-version="1.3.3"><span>1.3.3</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.3.2/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.3.2" data-version="1.3.2"><span>1.3.2</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.3.1/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.3.1" data-version="1.3.1"><span>1.3.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.3.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.3.0" data-version="1.3.0"><span>1.3.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.2.3/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.2.3" data-version="1.2.3"><span>1.2.3</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.2.1/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.2.1" data-version="1.2.1"><span>1.2.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.2.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.2.0" data-version="1.2.0"><span>1.2.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.1.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.1.0" data-version="1.1.0"><span>1.1.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-1.0.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="1.0.0" data-version="1.0.0"><span>1.0.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.19.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.19.0" data-version="0.19.0"><span>0.19.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.18.1/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.18.1" data-version="0.18.1"><span>0.18.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.18.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.18.0" data-version="0.18.0"><span>0.18.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.17.1/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.17.1" data-version="0.17.1"><span>0.17.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.17.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.17.0" data-version="0.17.0"><span>0.17.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.16.1/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.16.1" data-version="0.16.1"><span>0.16.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.16.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.16.0" data-version="0.16.0"><span>0.16.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.15.1/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.15.1" data-version="0.15.1"><span>0.15.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.15.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.15.0" data-version="0.15.0"><span>0.15.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.14.1/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.14.1" data-version="0.14.1"><span>0.14.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.14.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.14.0" data-version="0.14.0"><span>0.14.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.13.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.13.0" data-version="0.13.0"><span>0.13.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.12.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.12.0" data-version="0.12.0"><span>0.12.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.11.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.11.0" data-version="0.11.0"><span>0.11.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.10.1/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.10.1" data-version="0.10.1"><span>0.10.1</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.10.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.10.0" data-version="0.10.0"><span>0.10.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.9.0/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.9.0" data-version="0.9.0"><span>0.9.0</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.8/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.8" data-version="0.8"><span>0.8</span></a><a class="dropdown-item list-group-item list-group-item-action py-1" href="https://docs.scipy.org/doc/scipy-0.7/reference/reference/generated/scipy.integrate.odeint.html" role="option" data-version-name="0.7" data-version="0.7"><span>0.7</span></a></div>
+  </div>
+</div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://scipy.org/install/">
+                        Installing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="https://docs.scipy.org/doc/scipy/tutorial/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="https://docs.scipy.org/doc/scipy/reference/index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="https://docs.scipy.org/doc/scipy/building/index.html">
+                        Building from source
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="https://docs.scipy.org/doc/scipy/dev/index.html">
+                        Development
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="https://docs.scipy.org/doc/scipy/release.html">
+                        Release notes
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+  <button class="btn btn-sm navbar-btn theme-switch-button" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip" data-bs-original-title="light/dark">
+    <span class="theme-switch nav-link" data-mode="light"><svg class="svg-inline--fa fa-sun fa-lg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sun" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6zM160 256a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zm224 0a128 128 0 1 0 -256 0 128 128 0 1 0 256 0z"></path></svg><!-- <i class="fa-solid fa-sun fa-lg"></i> Font Awesome fontawesome.com --></span>
+    <span class="theme-switch nav-link" data-mode="dark"><svg class="svg-inline--fa fa-moon fa-lg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="moon" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"></path></svg><!-- <i class="fa-solid fa-moon fa-lg"></i> Font Awesome fontawesome.com --></span>
+    <span class="theme-switch nav-link" data-mode="auto"><svg class="svg-inline--fa fa-circle-half-stroke fa-lg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-half-stroke" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M448 256c0-106-86-192-192-192V448c106 0 192-86 192-192zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"></path></svg><!-- <i class="fa-solid fa-circle-half-stroke fa-lg"></i> Font Awesome fontawesome.com --></span>
+  </button>
+</div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/scipy/scipy" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="GitHub"><span><svg class="svg-inline--fa fa-square-github fa-lg" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="square-github" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM265.8 407.7c0-1.8 0-6 .1-11.6c.1-11.4 .1-28.8 .1-43.7c0-15.6-5.2-25.5-11.3-30.7c37-4.1 76-9.2 76-73.1c0-18.2-6.5-27.3-17.1-39c1.7-4.3 7.4-22-1.7-45c-13.9-4.3-45.7 17.9-45.7 17.9c-13.2-3.7-27.5-5.6-41.6-5.6s-28.4 1.9-41.6 5.6c0 0-31.8-22.2-45.7-17.9c-9.1 22.9-3.5 40.6-1.7 45c-10.6 11.7-15.6 20.8-15.6 39c0 63.6 37.3 69 74.3 73.1c-4.8 4.3-9.1 11.7-10.6 22.3c-9.5 4.3-33.8 11.7-48.3-13.9c-9.1-15.8-25.5-17.1-25.5-17.1c-16.2-.2-1.1 10.2-1.1 10.2c10.8 5 18.4 24.2 18.4 24.2c9.7 29.7 56.1 19.7 56.1 19.7c0 9 .1 21.7 .1 30.6c0 4.8 .1 8.6 .1 10c0 4.3-3 9.5-11.5 8C106 393.6 59.8 330.8 59.8 257.4c0-91.8 70.2-161.5 162-161.5s166.2 69.7 166.2 161.5c.1 73.4-44.7 136.3-110.7 158.3c-8.4 1.5-11.5-3.7-11.5-8zm-90.5-54.8c-.2-1.5 1.1-2.8 3-3.2c1.9-.2 3.7 .6 3.9 1.9c.3 1.3-1 2.6-3 3c-1.9 .4-3.7-.4-3.9-1.7zm-9.1 3.2c-2.2 .2-3.7-.9-3.7-2.4c0-1.3 1.5-2.4 3.5-2.4c1.9-.2 3.7 .9 3.7 2.4c0 1.3-1.5 2.4-3.5 2.4zm-14.3-2.2c-1.9-.4-3.2-1.9-2.8-3.2s2.4-1.9 4.1-1.5c2 .6 3.3 2.1 2.8 3.4c-.4 1.3-2.4 1.9-4.1 1.3zm-12.5-7.3c-1.5-1.3-1.9-3.2-.9-4.1c.9-1.1 2.8-.9 4.3 .6c1.3 1.3 1.8 3.3 .9 4.1c-.9 1.1-2.8 .9-4.3-.6zm-8.5-10c-1.1-1.5-1.1-3.2 0-3.9c1.1-.9 2.8-.2 3.7 1.3c1.1 1.5 1.1 3.3 0 4.1c-.9 .6-2.6 0-3.7-1.5zm-6.3-8.8c-1.1-1.3-1.3-2.8-.4-3.5c.9-.9 2.4-.4 3.5 .6c1.1 1.3 1.3 2.8 .4 3.5c-.9 .9-2.4 .4-3.5-.6zm-6-6.4c-1.3-.6-1.9-1.7-1.5-2.6c.4-.6 1.5-.9 2.8-.4c1.3 .7 1.9 1.8 1.5 2.6c-.4 .9-1.7 1.1-2.8 .4z"></path></svg><!-- <i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i> Font Awesome fontawesome.com --></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/SciPy_team" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Twitter"><span><svg class="svg-inline--fa fa-square-twitter fa-lg" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="square-twitter" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM351.3 199.3v0c0 86.7-66 186.6-186.6 186.6c-37.2 0-71.7-10.8-100.7-29.4c5.3 .6 10.4 .8 15.8 .8c30.7 0 58.9-10.4 81.4-28c-28.8-.6-53-19.5-61.3-45.5c10.1 1.5 19.2 1.5 29.6-1.2c-30-6.1-52.5-32.5-52.5-64.4v-.8c8.7 4.9 18.9 7.9 29.6 8.3c-9-6-16.4-14.1-21.5-23.6s-7.8-20.2-7.7-31c0-12.2 3.2-23.4 8.9-33.1c32.3 39.8 80.8 65.8 135.2 68.6c-9.3-44.5 24-80.6 64-80.6c18.9 0 35.9 7.9 47.9 20.7c14.8-2.8 29-8.3 41.6-15.8c-4.9 15.2-15.2 28-28.8 36.1c13.2-1.4 26-5.1 37.8-10.2c-8.9 13.1-20.1 24.7-32.9 34c.2 2.8 .2 5.7 .2 8.5z"></path></svg><!-- <i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i> Font Awesome fontawesome.com --></span>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <svg class="svg-inline--fa fa-outdent" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="outdent" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M0 64C0 46.3 14.3 32 32 32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 96 0 81.7 0 64zM192 192c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32zm32 96H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32zM0 448c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM.2 268.6c-8.2-6.4-8.2-18.9 0-25.3l101.9-79.3c10.5-8.2 25.8-.7 25.8 12.6V335.3c0 13.3-15.3 20.8-25.8 12.6L.2 268.6z"></path></svg><!-- <span class="fa-solid fa-outdent"></span> Font Awesome fontawesome.com -->
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-external" href="https://scipy.org/install/">
+                        Installing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="https://docs.scipy.org/doc/scipy/tutorial/index.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="https://docs.scipy.org/doc/scipy/reference/index.html">
+                        API reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="https://docs.scipy.org/doc/scipy/building/index.html">
+                        Building from source
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="https://docs.scipy.org/doc/scipy/dev/index.html">
+                        Development
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="https://docs.scipy.org/doc/scipy/release.html">
+                        Release notes
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+  <button class="btn btn-sm navbar-btn theme-switch-button" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip" data-bs-original-title="light/dark">
+    <span class="theme-switch nav-link" data-mode="light"><svg class="svg-inline--fa fa-sun fa-lg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sun" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M361.5 1.2c5 2.1 8.6 6.6 9.6 11.9L391 121l107.9 19.8c5.3 1 9.8 4.6 11.9 9.6s1.5 10.7-1.6 15.2L446.9 256l62.3 90.3c3.1 4.5 3.7 10.2 1.6 15.2s-6.6 8.6-11.9 9.6L391 391 371.1 498.9c-1 5.3-4.6 9.8-9.6 11.9s-10.7 1.5-15.2-1.6L256 446.9l-90.3 62.3c-4.5 3.1-10.2 3.7-15.2 1.6s-8.6-6.6-9.6-11.9L121 391 13.1 371.1c-5.3-1-9.8-4.6-11.9-9.6s-1.5-10.7 1.6-15.2L65.1 256 2.8 165.7c-3.1-4.5-3.7-10.2-1.6-15.2s6.6-8.6 11.9-9.6L121 121 140.9 13.1c1-5.3 4.6-9.8 9.6-11.9s10.7-1.5 15.2 1.6L256 65.1 346.3 2.8c4.5-3.1 10.2-3.7 15.2-1.6zM160 256a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zm224 0a128 128 0 1 0 -256 0 128 128 0 1 0 256 0z"></path></svg><!-- <i class="fa-solid fa-sun fa-lg"></i> Font Awesome fontawesome.com --></span>
+    <span class="theme-switch nav-link" data-mode="dark"><svg class="svg-inline--fa fa-moon fa-lg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="moon" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" data-fa-i2svg=""><path fill="currentColor" d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"></path></svg><!-- <i class="fa-solid fa-moon fa-lg"></i> Font Awesome fontawesome.com --></span>
+    <span class="theme-switch nav-link" data-mode="auto"><svg class="svg-inline--fa fa-circle-half-stroke fa-lg" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="circle-half-stroke" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M448 256c0-106-86-192-192-192V448c106 0 192-86 192-192zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"></path></svg><!-- <i class="fa-solid fa-circle-half-stroke fa-lg"></i> Font Awesome fontawesome.com --></span>
+  </button>
+</div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/scipy/scipy" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="GitHub"><span><svg class="svg-inline--fa fa-square-github fa-lg" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="square-github" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM265.8 407.7c0-1.8 0-6 .1-11.6c.1-11.4 .1-28.8 .1-43.7c0-15.6-5.2-25.5-11.3-30.7c37-4.1 76-9.2 76-73.1c0-18.2-6.5-27.3-17.1-39c1.7-4.3 7.4-22-1.7-45c-13.9-4.3-45.7 17.9-45.7 17.9c-13.2-3.7-27.5-5.6-41.6-5.6s-28.4 1.9-41.6 5.6c0 0-31.8-22.2-45.7-17.9c-9.1 22.9-3.5 40.6-1.7 45c-10.6 11.7-15.6 20.8-15.6 39c0 63.6 37.3 69 74.3 73.1c-4.8 4.3-9.1 11.7-10.6 22.3c-9.5 4.3-33.8 11.7-48.3-13.9c-9.1-15.8-25.5-17.1-25.5-17.1c-16.2-.2-1.1 10.2-1.1 10.2c10.8 5 18.4 24.2 18.4 24.2c9.7 29.7 56.1 19.7 56.1 19.7c0 9 .1 21.7 .1 30.6c0 4.8 .1 8.6 .1 10c0 4.3-3 9.5-11.5 8C106 393.6 59.8 330.8 59.8 257.4c0-91.8 70.2-161.5 162-161.5s166.2 69.7 166.2 161.5c.1 73.4-44.7 136.3-110.7 158.3c-8.4 1.5-11.5-3.7-11.5-8zm-90.5-54.8c-.2-1.5 1.1-2.8 3-3.2c1.9-.2 3.7 .6 3.9 1.9c.3 1.3-1 2.6-3 3c-1.9 .4-3.7-.4-3.9-1.7zm-9.1 3.2c-2.2 .2-3.7-.9-3.7-2.4c0-1.3 1.5-2.4 3.5-2.4c1.9-.2 3.7 .9 3.7 2.4c0 1.3-1.5 2.4-3.5 2.4zm-14.3-2.2c-1.9-.4-3.2-1.9-2.8-3.2s2.4-1.9 4.1-1.5c2 .6 3.3 2.1 2.8 3.4c-.4 1.3-2.4 1.9-4.1 1.3zm-12.5-7.3c-1.5-1.3-1.9-3.2-.9-4.1c.9-1.1 2.8-.9 4.3 .6c1.3 1.3 1.8 3.3 .9 4.1c-.9 1.1-2.8 .9-4.3-.6zm-8.5-10c-1.1-1.5-1.1-3.2 0-3.9c1.1-.9 2.8-.2 3.7 1.3c1.1 1.5 1.1 3.3 0 4.1c-.9 .6-2.6 0-3.7-1.5zm-6.3-8.8c-1.1-1.3-1.3-2.8-.4-3.5c.9-.9 2.4-.4 3.5 .6c1.1 1.3 1.3 2.8 .4 3.5c-.9 .9-2.4 .4-3.5-.6zm-6-6.4c-1.3-.6-1.9-1.7-1.5-2.6c.4-.6 1.5-.9 2.8-.4c1.3 .7 1.9 1.8 1.5 2.6c-.4 .9-1.7 1.1-2.8 .4z"></path></svg><!-- <i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i> Font Awesome fontawesome.com --></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://twitter.com/SciPy_team" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Twitter"><span><svg class="svg-inline--fa fa-square-twitter fa-lg" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="square-twitter" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM351.3 199.3v0c0 86.7-66 186.6-186.6 186.6c-37.2 0-71.7-10.8-100.7-29.4c5.3 .6 10.4 .8 15.8 .8c30.7 0 58.9-10.4 81.4-28c-28.8-.6-53-19.5-61.3-45.5c10.1 1.5 19.2 1.5 29.6-1.2c-30-6.1-52.5-32.5-52.5-64.4v-.8c8.7 4.9 18.9 7.9 29.6 8.3c-9-6-16.4-14.1-21.5-23.6s-7.8-20.2-7.7-31c0-12.2 3.2-23.4 8.9-33.1c32.3 39.8 80.8 65.8 135.2 68.6c-9.3-44.5 24-80.6 64-80.6c18.9 0 35.9 7.9 47.9 20.7c14.8-2.8 29-8.3 41.6-15.8c-4.9 15.2-15.2 28-28.8 36.1c13.2-1.4 26-5.1 37.8-10.2c-8.9 13.1-20.1 24.7-32.9 34c.2 2.8 .2 5.7 .2 8.5z"></path></svg><!-- <i class="fa-brands fa-square-twitter fa-lg" aria-hidden="true"></i> Font Awesome fontawesome.com --></span>
+            <span class="sr-only">Twitter</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+   <button class="btn navbar-btn search-button-field search-button__button" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip" data-bs-original-title="Search">
+    <svg class="svg-inline--fa fa-magnifying-glass" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="magnifying-glass" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"></path></svg><!-- <i class="fa-solid fa-magnifying-glass"></i> Font Awesome fontawesome.com -->
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ </div>
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links" aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav">
+    <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/main_namespace.html">scipy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/cluster.html">scipy.cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/constants.html">scipy.constants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/datasets.html">scipy.datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/fft.html">scipy.fft</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/fftpack.html">scipy.fftpack</a></li>
+<li class="toctree-l1 current active"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/integrate.html">scipy.integrate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html">scipy.interpolate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/io.html">scipy.io</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/linalg.html">scipy.linalg</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/misc.html">scipy.misc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/ndimage.html">scipy.ndimage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/odr.html">scipy.odr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/optimize.html">scipy.optimize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/signal.html">scipy.signal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/sparse.html">scipy.sparse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/spatial.html">scipy.spatial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/special.html">scipy.special</a></li>
+<li class="toctree-l1"><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/stats.html">scipy.stats</a></li>
+</ul>
+
+  </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.scipy.org/doc/scipy/index.html" class="nav-link" aria-label="Home">
+        <svg class="svg-inline--fa fa-house" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="house" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"></path></svg><!-- <i class="fa-solid fa-home"></i> Font Awesome fontawesome.com -->
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="https://docs.scipy.org/doc/scipy/reference/index.html" class="nav-link">SciPy API</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="https://docs.scipy.org/doc/scipy/reference/integrate.html" class="nav-link">Integration and ODEs (<code class="xref py py-mod docutils literal notranslate"><span class="pre">scipy.integrate</span></code>)</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">scipy.integr...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="scipy-integrate-odeint">
+<h1>scipy.integrate.odeint<a class="headerlink" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.odeint.html#scipy-integrate-odeint" title="Link to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="scipy.integrate.odeint">
+<span class="sig-prename descclassname"><span class="pre">scipy.integrate.</span></span><span class="sig-name descname"><span class="pre">odeint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Dfun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col_deriv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ml</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tcrit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ixpr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mxstep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mxhnil</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mxordn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mxords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">printmessg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tfirst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/scipy/scipy/blob/v1.13.1/scipy/integrate/_odepack_py.py#L29-L262"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.odeint.html#scipy.integrate.odeint" title="Link to this definition">#</a></dt>
+<dd><p>Integrate a system of ordinary differential equations.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For new code, use <a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html#scipy.integrate.solve_ivp" title="scipy.integrate.solve_ivp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.integrate.solve_ivp</span></code></a> to solve a
+differential equation.</p>
+</div>
+<p>Solve a system of ordinary differential equations using lsoda from the
+FORTRAN library odepack.</p>
+<p>Solves the initial value problem for stiff or non-stiff systems
+of first order ode-s:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dy</span><span class="o">/</span><span class="n">dt</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>  <span class="p">[</span><span class="ow">or</span> <span class="n">func</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">...</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>where y can be a vector.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default, the required order of the first two arguments of
+<em class="xref py py-obj">func</em> are in the opposite order of the arguments in the system
+definition function used by the <a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.ode.html#scipy.integrate.ode" title="scipy.integrate.ode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.integrate.ode</span></code></a> class and
+the function <a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html#scipy.integrate.solve_ivp" title="scipy.integrate.solve_ivp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.integrate.solve_ivp</span></code></a>. To use a function with
+the signature <code class="docutils literal notranslate"><span class="pre">func(t,</span> <span class="pre">y,</span> <span class="pre">...)</span></code>, the argument <em class="xref py py-obj">tfirst</em> must be
+set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</div>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>func</strong><span class="classifier">callable(y, t, …) or callable(t, y, …)</span></dt><dd><p>Computes the derivative of y at t.
+If the signature is <code class="docutils literal notranslate"><span class="pre">callable(t,</span> <span class="pre">y,</span> <span class="pre">...)</span></code>, then the argument
+<em class="xref py py-obj">tfirst</em> must be set <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd>
+<dt><strong>y0</strong><span class="classifier">array</span></dt><dd><p>Initial condition on y (can be a vector).</p>
+</dd>
+<dt><strong>t</strong><span class="classifier">array</span></dt><dd><p>A sequence of time points for which to solve for y. The initial
+value point should be the first element of this sequence.
+This sequence must be monotonically increasing or monotonically
+decreasing; repeated values are allowed.</p>
+</dd>
+<dt><strong>args</strong><span class="classifier">tuple, optional</span></dt><dd><p>Extra arguments to pass to function.</p>
+</dd>
+<dt><strong>Dfun</strong><span class="classifier">callable(y, t, …) or callable(t, y, …)</span></dt><dd><p>Gradient (Jacobian) of <em class="xref py py-obj">func</em>.
+If the signature is <code class="docutils literal notranslate"><span class="pre">callable(t,</span> <span class="pre">y,</span> <span class="pre">...)</span></code>, then the argument
+<em class="xref py py-obj">tfirst</em> must be set <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd>
+<dt><strong>col_deriv</strong><span class="classifier">bool, optional</span></dt><dd><p>True if <em class="xref py py-obj">Dfun</em> defines derivatives down columns (faster),
+otherwise <em class="xref py py-obj">Dfun</em> should define derivatives across rows.</p>
+</dd>
+<dt><strong>full_output</strong><span class="classifier">bool, optional</span></dt><dd><p>True if to return a dictionary of optional outputs as the second output</p>
+</dd>
+<dt><strong>printmessg</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to print the convergence message</p>
+</dd>
+<dt><strong>tfirst</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, the first two arguments of <em class="xref py py-obj">func</em> (and <em class="xref py py-obj">Dfun</em>, if given)
+must <code class="docutils literal notranslate"><span class="pre">t,</span> <span class="pre">y</span></code> instead of the default <code class="docutils literal notranslate"><span class="pre">y,</span> <span class="pre">t</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 1.1.0.</span></p>
+</div>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>y</strong><span class="classifier">array, shape (len(t), len(y0))</span></dt><dd><p>Array containing the value of y for each desired time in t,
+with the initial value <em class="xref py py-obj">y0</em> in the first row.</p>
+</dd>
+<dt><strong>infodict</strong><span class="classifier">dict, only returned if full_output == True</span></dt><dd><p>Dictionary containing additional output information</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>key</p></th>
+<th class="head"><p>meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>‘hu’</p></td>
+<td><p>vector of step sizes successfully used for each time step</p></td>
+</tr>
+<tr class="row-odd"><td><p>‘tcur’</p></td>
+<td><p>vector with the value of t reached for each time step
+(will always be at least as large as the input times)</p></td>
+</tr>
+<tr class="row-even"><td><p>‘tolsf’</p></td>
+<td><p>vector of tolerance scale factors, greater than 1.0,
+computed when a request for too much accuracy was detected</p></td>
+</tr>
+<tr class="row-odd"><td><p>‘tsw’</p></td>
+<td><p>value of t at the time of the last method switch
+(given for each time step)</p></td>
+</tr>
+<tr class="row-even"><td><p>‘nst’</p></td>
+<td><p>cumulative number of time steps</p></td>
+</tr>
+<tr class="row-odd"><td><p>‘nfe’</p></td>
+<td><p>cumulative number of function evaluations for each time step</p></td>
+</tr>
+<tr class="row-even"><td><p>‘nje’</p></td>
+<td><p>cumulative number of jacobian evaluations for each time step</p></td>
+</tr>
+<tr class="row-odd"><td><p>‘nqu’</p></td>
+<td><p>a vector of method orders for each successful step</p></td>
+</tr>
+<tr class="row-even"><td><p>‘imxer’</p></td>
+<td><p>index of the component of largest magnitude in the
+weighted local error vector (e / ewt) on an error return, -1
+otherwise</p></td>
+</tr>
+<tr class="row-odd"><td><p>‘lenrw’</p></td>
+<td><p>the length of the double work array required</p></td>
+</tr>
+<tr class="row-even"><td><p>‘leniw’</p></td>
+<td><p>the length of integer work array required</p></td>
+</tr>
+<tr class="row-odd"><td><p>‘mused’</p></td>
+<td><p>a vector of method indicators for each successful time step:
+1: adams (nonstiff), 2: bdf (stiff)</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Other Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ml, mu</strong><span class="classifier">int, optional</span></dt><dd><p>If either of these are not None or non-negative, then the
+Jacobian is assumed to be banded. These give the number of
+lower and upper non-zero diagonals in this banded matrix.
+For the banded case, <em class="xref py py-obj">Dfun</em> should return a matrix whose
+rows contain the non-zero bands (starting with the lowest diagonal).
+Thus, the return matrix <em class="xref py py-obj">jac</em> from <em class="xref py py-obj">Dfun</em> should have shape
+<code class="docutils literal notranslate"><span class="pre">(ml</span> <span class="pre">+</span> <span class="pre">mu</span> <span class="pre">+</span> <span class="pre">1,</span> <span class="pre">len(y0))</span></code> when <code class="docutils literal notranslate"><span class="pre">ml</span> <span class="pre">&gt;=0</span></code> or <code class="docutils literal notranslate"><span class="pre">mu</span> <span class="pre">&gt;=0</span></code>.
+The data in <em class="xref py py-obj">jac</em> must be stored such that <code class="docutils literal notranslate"><span class="pre">jac[i</span> <span class="pre">-</span> <span class="pre">j</span> <span class="pre">+</span> <span class="pre">mu,</span> <span class="pre">j]</span></code>
+holds the derivative of the <code class="docutils literal notranslate"><span class="pre">i</span></code>th equation with respect to the
+<code class="docutils literal notranslate"><span class="pre">j</span></code>th state variable.  If <em class="xref py py-obj">col_deriv</em> is True, the transpose of
+this <em class="xref py py-obj">jac</em> must be returned.</p>
+</dd>
+<dt><strong>rtol, atol</strong><span class="classifier">float, optional</span></dt><dd><p>The input parameters <em class="xref py py-obj">rtol</em> and <em class="xref py py-obj">atol</em> determine the error
+control performed by the solver.  The solver will control the
+vector, e, of estimated local errors in y, according to an
+inequality of the form <code class="docutils literal notranslate"><span class="pre">max-norm</span> <span class="pre">of</span> <span class="pre">(e</span> <span class="pre">/</span> <span class="pre">ewt)</span> <span class="pre">&lt;=</span> <span class="pre">1</span></code>,
+where ewt is a vector of positive error weights computed as
+<code class="docutils literal notranslate"><span class="pre">ewt</span> <span class="pre">=</span> <span class="pre">rtol</span> <span class="pre">*</span> <span class="pre">abs(y)</span> <span class="pre">+</span> <span class="pre">atol</span></code>.
+rtol and atol can be either vectors the same length as y or scalars.
+Defaults to 1.49012e-8.</p>
+</dd>
+<dt><strong>tcrit</strong><span class="classifier">ndarray, optional</span></dt><dd><p>Vector of critical points (e.g., singularities) where integration
+care should be taken.</p>
+</dd>
+<dt><strong>h0</strong><span class="classifier">float, (0: solver-determined), optional</span></dt><dd><p>The step size to be attempted on the first step.</p>
+</dd>
+<dt><strong>hmax</strong><span class="classifier">float, (0: solver-determined), optional</span></dt><dd><p>The maximum absolute step size allowed.</p>
+</dd>
+<dt><strong>hmin</strong><span class="classifier">float, (0: solver-determined), optional</span></dt><dd><p>The minimum absolute step size allowed.</p>
+</dd>
+<dt><strong>ixpr</strong><span class="classifier">bool, optional</span></dt><dd><p>Whether to generate extra printing at method switches.</p>
+</dd>
+<dt><strong>mxstep</strong><span class="classifier">int, (0: solver-determined), optional</span></dt><dd><p>Maximum number of (internally defined) steps allowed for each
+integration point in t.</p>
+</dd>
+<dt><strong>mxhnil</strong><span class="classifier">int, (0: solver-determined), optional</span></dt><dd><p>Maximum number of messages printed.</p>
+</dd>
+<dt><strong>mxordn</strong><span class="classifier">int, (0: solver-determined), optional</span></dt><dd><p>Maximum order to be allowed for the non-stiff (Adams) method.</p>
+</dd>
+<dt><strong>mxords</strong><span class="classifier">int, (0: solver-determined), optional</span></dt><dd><p>Maximum order to be allowed for the stiff (BDF) method.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html#scipy.integrate.solve_ivp" title="scipy.integrate.solve_ivp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_ivp</span></code></a></dt><dd><p>solve an initial value problem for a system of ODEs</p>
+</dd>
+<dt><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.ode.html#scipy.integrate.ode" title="scipy.integrate.ode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ode</span></code></a></dt><dd><p>a more object-oriented integrator based on VODE</p>
+</dd>
+<dt><a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html#scipy.integrate.quad" title="scipy.integrate.quad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quad</span></code></a></dt><dd><p>for finding the area under a curve</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="try_examples_outer_container docutils container" id="22746d7d-11d7-43d6-a420-488c93657643">
+<div class="try_examples_button_container"><button class="try_examples_button" onclick="window.tryExamplesShowIframe(&#39;22746d7d-11d7-43d6-a420-488c93657643&#39;,&#39;8a8947d6-27bc-43da-8e98-d5d24ed54d77&#39;,&#39;9bc63ed2-2e3d-4d59-b8f3-91ede7374020&#39;,&#39;../../lite/tree/../notebooks/?path=9e4f6eea_1f3e_4ec3_acb3_40a57509528b.ipynb&#39;,&#39;None&#39;)">Try it in your browser!</button></div><div class="try_examples_content docutils container">
+<p>The second order differential equation for the angle <em class="xref py py-obj">theta</em> of a
+pendulum acted on by gravity with friction can be written:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">theta</span><span class="s1">''</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">theta</span><span class="s1">'(t) + c*sin(theta(t)) = 0</span>
+</pre></div>
+</div>
+<p>where <em class="xref py py-obj">b</em> and <em class="xref py py-obj">c</em> are positive constants, and a prime (’) denotes a
+derivative. To solve this equation with <a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.odeint.html#scipy.integrate.odeint" title="scipy.integrate.odeint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">odeint</span></code></a>, we must first convert
+it to a system of first order equations. By defining the angular
+velocity <code class="docutils literal notranslate"><span class="pre">omega(t)</span> <span class="pre">=</span> <span class="pre">theta'(t)</span></code>, we obtain the system:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">theta</span><span class="s1">'(t) = omega(t)</span>
+<span class="n">omega</span><span class="s1">'(t) = -b*omega(t) - c*sin(theta(t))</span>
+</pre></div>
+</div>
+<p>Let <em class="xref py py-obj">y</em> be the vector [<em class="xref py py-obj">theta</em>, <em class="xref py py-obj">omega</em>]. We implement this system
+in Python as:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">pend</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">theta</span><span class="p">,</span> <span class="n">omega</span> <span class="o">=</span> <span class="n">y</span>
+<span class="gp">... </span>    <span class="n">dydt</span> <span class="o">=</span> <span class="p">[</span><span class="n">omega</span><span class="p">,</span> <span class="o">-</span><span class="n">b</span><span class="o">*</span><span class="n">omega</span> <span class="o">-</span> <span class="n">c</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)]</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">dydt</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>We assume the constants are <em class="xref py py-obj">b</em> = 0.25 and <em class="xref py py-obj">c</em> = 5.0:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="mf">5.0</span>
+</pre></div>
+</div>
+<p>For initial conditions, we assume the pendulum is nearly vertical
+with <em class="xref py py-obj">theta(0)</em> = <em class="xref py py-obj">pi</em> - 0.1, and is initially at rest, so
+<em class="xref py py-obj">omega(0)</em> = 0.  Then the vector of initial conditions is</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y0</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We will generate a solution at 101 evenly spaced samples in the interval
+0 &lt;= <em class="xref py py-obj">t</em> &lt;= 10.  So our array of times is:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Call <a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.odeint.html#scipy.integrate.odeint" title="scipy.integrate.odeint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">odeint</span></code></a> to generate the solution. To pass the parameters
+<em class="xref py py-obj">b</em> and <em class="xref py py-obj">c</em> to <em class="xref py py-obj">pend</em>, we give them to <a class="reference internal" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.odeint.html#scipy.integrate.odeint" title="scipy.integrate.odeint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">odeint</span></code></a> using the <em class="xref py py-obj">args</em>
+argument.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">odeint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sol</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">pend</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The solution is an array with shape (101, 2). The first column
+is <em class="xref py py-obj">theta(t)</em>, and the second is <em class="xref py py-obj">omega(t)</em>. The following code
+plots both components.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">sol</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">'b'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'theta(t)'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">sol</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">'g'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'omega(t)'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'best'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'t'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../../_images/scipy-integrate-odeint-1.png" class="plot-directive" src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/scipy-integrate-odeint-1.png">
+</figure>
+</div>
+</div>
+<div id="9bc63ed2-2e3d-4d59-b8f3-91ede7374020" class="try_examples_outer_iframe  hidden"><div class="try_examples_button_container"><button class="try_examples_button" onclick="window.tryExamplesHideIframe(&#39;22746d7d-11d7-43d6-a420-488c93657643&#39;,&#39;9bc63ed2-2e3d-4d59-b8f3-91ede7374020&#39;)">Go Back</button><button class="try_examples_button" onclick="window.openInNewTab(&#39;22746d7d-11d7-43d6-a420-488c93657643&#39;,&#39;9bc63ed2-2e3d-4d59-b8f3-91ede7374020&#39;)">Open In Tab</button></div><div id="8a8947d6-27bc-43da-8e98-d5d24ed54d77" class="jupyterlite_sphinx_iframe_container"></div></div><script>document.addEventListener("DOMContentLoaded", function() {window.loadTryExamplesConfig("../../try_examples.json");});</script></dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.OdeSolution.__call__.html" title="previous page">
+      <svg class="svg-inline--fa fa-angle-left" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"></path></svg><!-- <i class="fa-solid fa-angle-left"></i> Font Awesome fontawesome.com -->
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">scipy.integrate.OdeSolution.__call__</p>
+      </div>
+    </a>
+    <a class="right-next" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.ode.html" title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">scipy.integrate.ode</p>
+      </div>
+      <svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <i class="fa-solid fa-angle-right"></i> Font Awesome fontawesome.com -->
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div id="pst-page-navigation-heading-2" class="page-toc tocsection onthispage">
+    <svg class="svg-inline--fa fa-list" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="list" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z"></path></svg><!-- <i class="fa-solid fa-list"></i> Font Awesome fontawesome.com --> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.odeint.html#scipy.integrate.odeint"><code class="docutils literal notranslate"><span class="pre">odeint</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/bootstrap.js.下载"></script>
+<script src="./scipy.integrate.odeint — SciPy v1.13.1 Manual_files/pydata-sphinx-theme.js.下载"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2008-2024, The SciPy community.
+      <br>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    <br>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  
+</body></html>
